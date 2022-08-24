@@ -41,6 +41,11 @@ poseNet = ml5.poseNet(video, modelLoaded);
 poseNet.on('pose', gotPoses);
 }
 
+function preload(){
+  hit = loadSound("ball_touch_paddel.wav");
+  miss = loadSound("missed.wav");
+}
+
 function modelLoaded() {
   console.log('PoseNet Is Initialized');
 }
@@ -168,11 +173,11 @@ function move(){
   if (ball.x-2.5*ball.r/2< 0){
   if (ball.y >= paddle1Y&& ball.y <= paddle1Y + paddle1Height) {
     ball.dx = -ball.dx+0.5; 
-    
+    hit.play();
   }
   else{
     pcscore++;
-    
+    miss.play();
     reset();
     navigator.vibrate(100);
   }
@@ -185,7 +190,7 @@ if(pcscore ==4){
     stroke("white");
     textSize(25);
     text("Game Over!",width/2,height/2);
-    text("Reload the page!",width/2,height/2+30)
+    text("Press restart to restart the game!",width/2,height/2+30)
     noLoop();
     pcscore = 0;
  }
@@ -194,6 +199,11 @@ if(pcscore ==4){
    }   
 }
 
+function restart(){
+  pcscore = 0;
+  playerscore = 0;
+  loop();
+}
 
 //width height of canvas speed of ball 
 function models(){
